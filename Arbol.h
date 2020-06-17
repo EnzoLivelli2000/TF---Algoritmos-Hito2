@@ -42,22 +42,20 @@ private:
 		}
 	}
 
-	void buscar(Nodo<T> *nodo, T dato) {
-		bool encontrado = false;
+	void buscar(Nodo<T> *nodo, T dato, bool & encontrado) {
 		if (nodo == nullptr) {
-			if(encontrado == false)return;
+			encontrado = false;
 		}
 		else {
 			if (nodo->dato == dato) {
-				cout << nodo->dato;
 				encontrado = true;
-				if (encontrado == true)return;
+				cout << nodo->dato;
 			}
 			else if (dato <= nodo->dato) {
-				buscar(nodo->izquierda, dato);
+				buscar(nodo->izquierda, dato, encontrado);
 			}
 			else {
-				buscar(nodo->derecha, dato);
+				buscar(nodo->derecha, dato, encontrado);
 			}
 		}
 	}
@@ -79,12 +77,14 @@ public:
 	void destruir() {
 		destruir(raiz);
 	}
-	void buscar(T dato) {
-		
-		buscar(raiz, dato);
-		
+	bool buscar(T dato) {
+		bool encont = false;
+		buscar(raiz, dato, encont);
+		return encont;
 	}
 	void enOrden() {
 		enOrden(raiz);
 	}
 };
+
+
