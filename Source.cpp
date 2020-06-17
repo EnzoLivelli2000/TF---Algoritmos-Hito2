@@ -5,14 +5,17 @@
 #include <vector>
 #include "Arbol.h"
 #include "Listas.h"
+#include <stdlib.h>
+#include <map>
 
 using namespace std;
 using namespace System;
 
 int menu() {
 	int opcion;
+
 	cout << "                  menu" << endl;
-	cout << " 1 - Creacion de Tablas e Insercion de columnas " << endl; // pedirle al usuario un numero de fila y columnas, y posteriomente poder insertar columnas de manera individual
+	cout << " 1 - Creacion de Tablas e Insercion de columnas "<< endl; // pedirle al usuario un numero de fila y columnas, y posteriomente poder insertar columnas de manera individual
 	cout << " 2 - Insercion de Registros " << endl; // Check
 	cout << " 3 - Indexado de datos por columnas " << endl; //  !Esta funcionalidad no la verá el usuario¡
 	cout << " 4 - Seleccion de datos por columnas " << endl;
@@ -27,13 +30,26 @@ int menu() {
 
 int main() {
 	string nombre, edad, sexo;
-	list<ListaD<string>*>* indx = new list<ListaD<string>*>();
-	vector<Arbol<list<ListaD<string>*>*>*>* arbolIndx = new vector<Arbol<list<ListaD<string>*>*>*>();
-	int resp;
 
+	list<ListaD<string>*>* indx = new list<ListaD<string>*>();
+	//Arbol<list<ListaD<string>>*>* arbol_IndxInt = new Arbol<list<ListaD<string>>*>();
+
+	auto crInt = [](int a, int b) { return a < b; };
+	auto crS = [](string a, string b) { return a.compare(b) < 0; };
+
+	vector<Arbol<string>*>arboles;// = new vector<Arbol<string>*>();
+	
+//	map<string, Arbol<string>*>* arboles = new map<string, Arbol<string>*>();
+//
+//string n;
+//(arboles)[n]->insertar("hola", crS);
+//(arboles)[n]->buscar("hola");
 	
 
-	switch (menu()){
+	int resp;
+
+
+	switch (menu()){ 
 	case 1: cout << "estamos trabajando en ello " << endl; break;
 	case 2:	
 		do {
@@ -45,17 +61,24 @@ int main() {
 			lista->push_back(edad);
 			lista->push_back(sexo);
 		
+			(arboles)[0]->insertar(nombre, crS);
 			indx->push_back(lista);
 			cout << "respuesta [ 1 - continuar ]: "; cin >> resp;
 			cout << endl;
 			if (resp != 1) {
+				
 				for (list<ListaD<string>*> ::iterator it = indx->begin(); it != indx->end(); ++it) {
 					for (int i = 0; i < lista->size(); i++) {
-						cout << (*it)->at(i);
+						cout << (*it)->at(i)<<" ";
 						
 						//cout << lista->at(i) << " ";
 					}cout << endl;
 				}
+				for (list<ListaD<string>*> ::iterator it = indx->begin(); it != indx->end(); ++it) {
+					cout << "nombre encontrado: "; (arboles)[0]->buscar((*it)->at(0));
+					cout << endl;
+					
+				}cout << "nombres ordenados alfabeticamente : "; (arboles)[0]->enOrden();
 			}
 		} while (resp == 1);
 		break;
@@ -65,6 +88,7 @@ int main() {
 	case 6:	 cout << "estamos trabajando en ello " << endl; break;
 	case 7:	 cout << "estamos trabajando en ello " << endl; break;
 	}
+
 	
 	//switch (menu())
 	//{
@@ -107,3 +131,17 @@ int main() {
 	_getch();
 	return 0;
 }
+
+
+
+
+/*Arbol<int>* arbol_IndxInt = new Arbol<int>();*/
+//AVLTree<Row*, string>* arb = new AVLTree<Row*, string>([=](Row* r) {return r->getData(colName);});
+
+
+
+//map<string, Arbol<string>>* arboles = new map<string, Arbol<string>>();
+//
+//string nombre;
+//(*arboles)[nombre]->insertar("hola", crS);
+//(*arboles)[nombre]->buscar("hola");
