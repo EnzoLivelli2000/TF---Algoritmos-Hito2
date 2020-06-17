@@ -29,7 +29,9 @@ int menu() {
 }
 
 int main() {
-	string nombre, edad, sexo;
+	string *nombre = new string();
+	string *edad = new string();
+	string *sexo = new string();
 
 	list<ListaD<string>*>* indx = new list<ListaD<string>*>();
 	//Arbol<list<ListaD<string>>*>* arbol_IndxInt = new Arbol<list<ListaD<string>>*>();
@@ -37,7 +39,9 @@ int main() {
 	auto crInt = [](int a, int b) { return a < b; };
 	auto crS = [](string a, string b) { return a.compare(b) < 0; };
 
-	vector<Arbol<string>*>arboles;// = new vector<Arbol<string>*>();
+	Arbol<string> * aux = new Arbol<string>();
+	vector<Arbol<string>*>*arboles = new vector<Arbol<string>*>();
+
 	
 //	map<string, Arbol<string>*>* arboles = new map<string, Arbol<string>*>();
 //
@@ -47,21 +51,21 @@ int main() {
 	
 
 	int resp;
-
+	(*arboles)[0]->insertar(aux,crS);
 
 	switch (menu()){ 
 	case 1: cout << "estamos trabajando en ello " << endl; break;
 	case 2:	
 		do {
 			ListaD<string>* lista = new ListaD<string>();
-			cout << "Ingrese nombre del usuario :"; cin >> nombre;
-			cout << "Ingrese edad del usuario :"; cin >> edad;
-			cout << "Ingrese sexo del usuario :"; cin >> sexo;
-			lista->push_back(nombre);
-			lista->push_back(edad);
-			lista->push_back(sexo);
+			cout << "Ingrese nombre del usuario :"; cin >> *nombre;
+			cout << "Ingrese edad del usuario :"; cin >> *edad;
+			cout << "Ingrese sexo del usuario :"; cin >> *sexo;
+			lista->push_back(*nombre);
+			lista->push_back(*edad);
+			lista->push_back(*sexo);
 		
-			(arboles)[0]->insertar(nombre, crS);
+			(*arboles)[0]->insertar(*nombre, crS);
 			indx->push_back(lista);
 			cout << "respuesta [ 1 - continuar ]: "; cin >> resp;
 			cout << endl;
@@ -75,10 +79,10 @@ int main() {
 					}cout << endl;
 				}
 				for (list<ListaD<string>*> ::iterator it = indx->begin(); it != indx->end(); ++it) {
-					cout << "nombre encontrado: "; (arboles)[0]->buscar((*it)->at(0));
+					cout << "nombre encontrado: "; (*arboles)[0]->buscar((*it)->at(0));
 					cout << endl;
 					
-				}cout << "nombres ordenados alfabeticamente : "; (arboles)[0]->enOrden();
+				}cout << "nombres ordenados alfabeticamente : "; (*arboles)[0]->enOrden();
 			}
 		} while (resp == 1);
 		break;
