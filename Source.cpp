@@ -3,6 +3,7 @@
 #include <list>
 #include <string>
 #include <vector>
+#include <stdlib.h>
 #include "Arbol.h"
 #include "Listas.h"
 
@@ -15,7 +16,7 @@ int menu() {
 	cout << "                  Menu" << endl;
 	cout << " 1 - Creacion de Tablas e Insercion de columnas " << endl; // Check
 	cout << " 2 - Insercion de Registros e indexado automatico " << endl; // Check
-	cout << " 3 - Seleccion de datos por columnas " << endl;
+	cout << " 3 - Seleccion de datos por columnas " << endl; // Check
 	cout << " 4 - Filtrado de datos por columnas " << endl;
 	cout << " 5 - Ordenamiento de datos por columnas " << endl;
 	cout << " 6 - Exportacion de datos a archivos planos con diferente formato " << endl;
@@ -25,6 +26,13 @@ int menu() {
 	Console::Clear();
 	return opcion;
 }
+
+void selecion_de_datos_por_columnas(vector<string> nombresColumnas) {
+	for (int i = 0; i < nombresColumnas.size(); i++) {
+		cout << (i + 1) << "." << nombresColumnas.at(i) << "   ";
+	}
+}
+
 
 int main() {
 	//Listas de listas
@@ -38,10 +46,9 @@ int main() {
 	//Arboles - vectores de arboles
 	auto crInt = [](int a, int b) { return a < b; };
 	auto crS = [](string a, string b) { return a.compare(b) < 0; };
-	vector<Arbol<string>*>arboles;// = new vector<Arbol<string>*>();
+	vector<Arbol<string>*>arboles;
 	Arbol <string> *arbolito;
 	vector <int> seleccionDeColumnas; // un vector auxiliar para poder guardar el numero de la columna que desea visualizar en el usuario
-
 
 	int r;
 	do {
@@ -72,10 +79,6 @@ int main() {
 				cout << "Todas las columnas fueron registradas correctamente!";
 				_getch();
 			}
-			//else {
-			//	system("cls");
-			//	cout << "Esta opcion no esta en el menu!" << endl; // !esto no tiene sentido, deberia salir del menú¡
-			//}
 
 			break;
 		case 2:
@@ -119,23 +122,23 @@ int main() {
 			} while (numeroColumnas > nombresColumnas.size());
 			system("cls");
 			cout << "\t Seleccion de datos por columnas" << endl;
-			for (int i = 0; i < nombresColumnas.size(); i++) {
+			/*for (int i = 0; i < nombresColumnas.size(); i++) {
 				cout << (i + 1) << "." << nombresColumnas.at(i) << "   ";
-			}
+			}*/
+			selecion_de_datos_por_columnas(nombresColumnas); // hemos cambiado esto, por un funcion void
 			cout << endl;
 			for (int i = 0; i < numeroColumnas; i++) {
 				cout << "Ingrese el numero de la columna que quiere: ";
-				cin >> numeroColumna;// podemos hacer esto como un vector 
+				cin >> numeroColumna;
 				seleccionDeColumnas.push_back(numeroColumna - 1);
 			}
-
 			for (int i = 0; i < seleccionDeColumnas.size(); i++) {
+
 				for (list<ListaD<string>*> ::iterator it = indx->begin(); it != indx->end(); ++it) {
-					cout << "nombre encontrado: "; (arboles)[1]->buscar((*it)->at(seleccionDeColumnas.at(i))); cout << endl;
-					/*cout << seleccionDeColumnas.at(i);
-					cout << endl;*/
+					cout << "nombre encontrado: "; (arboles)[seleccionDeColumnas.at(i)]->buscar((*it)->at(seleccionDeColumnas.at(i))); cout << endl;
+					cout << endl;
 				}
-			}/*cout << "nombres ordenados alfabeticamente : "; (arboles)[0]->enOrden();*/
+			}
 			seleccionDeColumnas.clear();
 			cout << endl;
 
@@ -143,7 +146,47 @@ int main() {
 
 			_getch();
 			break;
-			//case 4:	 cout << "estamos trabajando en ello " << endl; break;
+		case 4:
+			int resp;
+			do {
+				system("cls");
+				cout << "\t Filtrado de datos por columnas" << endl;
+				cout << " 1. Mayor " << endl;
+				cout << " 2. Menor " << endl;
+				cout << " 3. Igual " << endl;
+				cout << " 4. Inicia con " << endl;
+				cout << " 5. Finaliza con " << endl;
+				cout << " 6. Está contenido en " << endl;
+				cout << " 7. No está contenido en " << endl;
+				cout << " 8. SALIR" << endl;
+				cout << "Ingrese opcion [puedes elegir 2]: "; cin >> resp;
+				switch (resp) {
+				case 1: // por ahora solo funciona con numeros
+					system("cls");
+					cout << "\t Mayor " << endl;
+					selecion_de_datos_por_columnas(nombresColumnas); cout << endl;
+					for (int i = 0; i < numeroColumnas; i++) {
+						cout << "Ingrese el numero de la columna que quiere filtrar: ";
+						cin >> numeroColumna;
+						seleccionDeColumnas.push_back(numeroColumna - 1);
+					}
+					for (int i = 0; i < seleccionDeColumnas.size(); i++) {
+
+						for (list<ListaD<string>*> ::iterator it = indx->begin(); it != indx->end(); ++it) {
+							//cout << "nombre encontrado: "; (arboles)[seleccionDeColumnas.at(i)]->buscar((*it)->at(seleccionDeColumnas.at(i))); cout << endl;
+							(arboles)[seleccionDeColumnas.at(i)]->mayor(); cout << endl;
+							cout << endl;
+						}
+					}
+					_getch();
+					break;
+				}
+			} while (resp != 8);
+
+
+
+
+			break;
 			//case 5:	 cout << "estamos trabajando en ello " << endl; break;
 			//case 6:	 cout << "estamos trabajando en ello " << endl; break;
 			//case 7:	 cout << "estamos trabajando en ello " << endl; break;
